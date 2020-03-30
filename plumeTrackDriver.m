@@ -29,8 +29,8 @@ flag_thermCube   = false;   % Get thermal data cube
 
 % ----- Data Cube Workflow: velocimetry --------
 flag_gradientVid = false;   % Make video of thermal gradient from thermal data cube
-flag_scaledVid   = false;   % Make scaled thermal video for optic flow analysis
-flag_velocimetry = true;   % Optical Flow analysis on thermal or gradient video
+flag_scaledVid   = true;   % Make scaled thermal video for optic flow analysis
+flag_velocimetry = false;   % Optical Flow analysis on thermal or gradient video
 flag_thermCorr   = false;   % Cross-correlation analysis on thermal data cube
 % flag_spectra1x1D = false; % Anisotropy spectral analysis - NOT YET IMPLEMENTED
 

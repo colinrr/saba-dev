@@ -23,7 +23,7 @@ function [vidParams,oparamfile] = thermCube2video(thermCube,vP,ovid)
 %                   vP.fgMaskFile = Mask out foreground using this filepath.
 %                                     > Leave empty to skip (unnecessary if
 %                                     using plumeMask)
-%                   vP.ROI        = NOTE IMPLEMENTED. Image region of interest
+%                   vP.ROI        = NOT IMPLEMENTED. Image region of interest
 %
 %               BOOL FLAGS:
 %                   vP.smoothHI    --> Applies time smoothing to HIGH Tthresh

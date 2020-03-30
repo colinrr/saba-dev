@@ -1,15 +1,16 @@
 function plotCheckOpticFlow(D,V,Idx,ROI,trackParams)
 % 
 % Function for QC'ing thermal optical flow and event detection.
-% INPUT:    D         = thermal data cube
-%           V         = optic flow data cube
-%           Idx       = index vector of slices in D, V (not FRAME index)
-%           ROI       = Window of interest for getting stats (usually the
+% INPUT:  D           = thermal data cube
+%         V           = optic flow data cube
+%         Idx         = subscript vector of time slices in D, V (not FRAME index)
+%   Optional:
+%         ROI         = Window of interest for getting stats (usually the
 %                       detection window, source window, or tracking
 %                       window). Can enter as matrix of size [numel(Idx) 4]
 %                       for different ROI corresponding to each frame.
 %                       --> matrix coords: [i1 i2 j1 j2]
-% 
+%         trackParams = trackParams struct for pulseTrack
 %           
 
 % clearvars -except D

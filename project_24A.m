@@ -24,7 +24,7 @@ outputDir = fullfile(procDir,'PTresults/');
 
 asc_params = fullfile(thermDir,'RT_1030.txt');
 % asc_params = [];
-mat_params = fullfile(matDir,'params.mat');
+mat_params = fullfile(thermDir,'params.mat');
 
 % glob_spec = '*.tif';
 glob_spec = 'RT_1030_corrected_*.txt';
@@ -101,8 +101,8 @@ interpIdx = [378:1572];
 
 %% ============== THERMAL DATA CUBE SETUP ================
 cubeDir = fullfile(thermDir,'thermCubeAnalysis/');
-thermIdx = [378:1572]';
-% thermIdx = [378:395]';
+% thermIdx = [378:1572]';
+thermIdx = [378:478]'; % mini cube for testing
 
 %  [x1 x2 y1 y2] % Must be based off INTERPOLATED IMAGES
 % ROI    = [390 550 600 730]; %[375 620 568 706]; % Wide window, captures whole plume plus some background
@@ -113,12 +113,14 @@ ROI = [390 980 90 730]; % REALLY big window to catch the whole plume, let maskin
 
 % Current Therm data cube file
 % thermFile   = fullfile(cubeDir,'thermStats_2019-07-05_z131_x161_t598.mat');
-thermFile   = fullfile(cubeDir,'thermStats_2019-09-18_z641_x591_t1195.mat');
+
 % thermFile   = fullfile(cubeDir,'thermStats_2019-09-18_z641_x591_t195.mat');
 % thermFile   = fullfile(cubeDir,'thermStats_2019-09-17_z641_x591_t18.mat');
+% thermFile   = fullfile(cubeDir,'thermStats_2019-09-18_z641_x591_t1195.mat');
+thermFile   = fullfile(cubeDir,'thermStats_2020-03-06_z641_x591_t101.mat'); % Mini cube for testing
 
 %% ============== DATA CUBE VELOCIMETRY  ================
-opticIdx = thermIdx(300); %thermIdx(1:2:end);
+% opticIdx = thermIdx(300); %thermIdx(1:2:end);
 % ovid = []; %fullfile(thermDir,'vids/thermal-video'); % No extension
 
 % -----------GRADIENT VIDEO PARAMS (thermCube2gradient)------------
@@ -186,7 +188,7 @@ vidParFile = fullfile(thermDir,'vids/thermal_scaled-video_2020-01-21_1195frames_
 
 %% =========== IMAGE SPECTRAL ANALYSIS (plumeSpec1D) ===========
 % Using matDir as input matfiles
-geomf  = fullfile(matDir,'geometry.mat');
+geomf  = fullfile(thermDir,'geometry.mat');
 % z0 = 719; % Minimum height to look at plume params (pixel coordinate)
     % Set max height as a minimum plume width?
     

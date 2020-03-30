@@ -10,7 +10,7 @@
 clearvars -except D V vidParams; %close all
 clear textprogressbar
 %%
-cubeDir  = '~/Kahuna/data/sabancaya_5_2018/image_exports/24A/thermCubeAnalysis/';
+% cubeDir  = '~/Kahuna/data/sabancaya_5_2018/image_exports/24A/thermCubeAnalysis/';
 % cubeFile = fullfile(cubeDir,'thermStats_2019-09-18_z641_x591_t1195.mat');
 % velCube  = fullfile(cubeDir,'velocimetry_190918_n1194_nSz5_nPyr3_fSz15.mat');
 % velCube = fullfile(cubeDir, 'velocimetry_20-02-20_n1195_nPyr3_sPyr0-50_nIter3_nSz5_fSz10.mat');
@@ -18,7 +18,7 @@ cubeDir  = '~/Kahuna/data/sabancaya_5_2018/image_exports/24A/thermCubeAnalysis/'
 % velCube = fullfile(cubeDir, 'velocimetry_20-02-18_n1195_nPyr3_sPyr0-50_nIter3_nSz3_fSz15.mat');
 % velCube = fullfile(cubeDir, 'opticFlowFB_20-02-26_n1195_nPyr3_sPyr0-50_nIter3_nSz3_fSz7.mat');
 % velCube = fullfile(cubeDir, 'opticFlowFB_20-03-01_n1195_nPyr3_sPyr0-50_nIter3_nSz3_fSz10.mat');
-velCube = fullfile(cubeDir, 'opticFlowFB_20-03-01_n1195_nPyr3_sPyr0-50_nIter3_nSz5_fSz15.mat');
+% velCube = fullfile(cubeDir, 'opticFlowFB_20-03-01_n1195_nPyr3_sPyr0-50_nIter3_nSz5_fSz15.mat');
 
 muWinHeight = 30; % Height of windows for mean image profile
 
@@ -57,7 +57,7 @@ trackParams.Gpercetile              = 20;
 trackParams.detection_window_offset = 18; % (pixels)
 trackParams.detection_window_height = 18; % (pixels)
 % -------------------------------------------------------------------
-figdir = '/Users/crrowell/Kahuna/data/sabancaya_5_2018/image_exports/24A/figures';
+% figdir = '/Users/crrowell/Kahuna/data/sabancaya_5_2018/image_exports/24A/figures';
 
 
 trkIdxM    = 2;
@@ -535,7 +535,7 @@ xlabel('Time [s]')
 linkaxes([axa axb axc],'x')
 xlim([0.5 40])
 
-%%
+%% Plot...something about the tracks?
 figure
 plotLineError(t,T(vI0).prctile');
 hold on

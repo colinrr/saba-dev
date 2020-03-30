@@ -1,5 +1,7 @@
 function plotThermVelocities(x,z,Vx,Vz,Vmax,idx,flag,pt,ROI)
+% plotThermVelocities(x,z,Vx,Vz,Vmax,idx,flag,pt,ROI)
 % OPTIONAL INPUT:
+% Vmax
 % idx  = list of indices in 3rd dimension of velocity cubes
 % flag = 'colorplot', 'vector', 'both'
 % pt   = pause time between frames
@@ -73,8 +75,13 @@ for ii=1:N
         set(gca,'YDir','normal')
         xlabel('V_x')
         ylabel('V_z')
-        set(gca,'XTick',fix([-Vmax Vmax]))
-        set(gca,'YTick',fix([-Vmax Vmax]))
+        if Vmax<1
+            Vmaxax = fix(Vmax*10)/10;
+        else
+            Vmaxax = fix(Vmax);
+        end
+        set(gca,'XTick',[-Vmaxax Vmaxax])
+        set(gca,'YTick',[-Vmaxax Vmaxax])
         hold on
         plot(round([-Vmax Vmax]),[0 0],'k')
         plot([0 0],round([-Vmax Vmax]),'k')
