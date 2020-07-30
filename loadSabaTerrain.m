@@ -94,8 +94,8 @@ if run_dem
 
 % DEM Elevs at atmo points
     [X,Y] = pixcenters(aR,size(A),'makegrid');
-%     dZ = interp2(X,Y,A,E,N); % All modis file 1
-%     dZ2 = interp2(X,Y,A,E2,N2); % All modis file 2
+    dZ = interp2(X,Y,A,E,N); % All modis file 1
+    dZ2 = interp2(X,Y,A,E2,N2); % All modis file 2
 %     dZ0 = interp2(X,Y,A,atmo.Easting,atmo.Northing);
 %     atmo.DEM_Surface_Elevation = dZ0;
 %     atmo.units.DEM_Surface_Elevation = 'm';

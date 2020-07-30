@@ -29,6 +29,14 @@ function img = computeColor(u,v)
 % WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 % ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 % OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+%
+% MINOR EDIT BY C ROWELL, March 2020
+% --> edited the 'makeColorWheel' function to 'rotate' the colorwheel by 90
+% degrees, putting 'hot' colours on top (magenta-red-yellow) and 'cool'
+% colours on bottom (yellow-green-blue-magenta) to make the colour
+% plots more intuitive to read for some purposes (ie hot = up, cool = down)
+%   '-> This allows for arbitraty rotation by changing 'rotAngle' variable
+%   below...
 
 nanIdx = isnan(u) | isnan(v);
 u(nanIdx) = 0;
@@ -62,7 +70,7 @@ for i = 1:size(colorwheel,2)
     col(~idx) = col(~idx)*0.5;             % out of range
     
     img(:,:, i) = uint8(floor(255*col.*(1-nanIdx)));         
-end;    
+end   
 
 %%
 function colorwheel = makeColorwheel()
@@ -113,3 +121,14 @@ col = col+BM;
 %MR
 colorwheel(col+(1:MR), 3) = 255 - floor(255*(0:MR-1)/MR)';
 colorwheel(col+(1:MR), 1) = 255;
+
+% ------- CROWELL edit for arbitrary color wheel 'rotation' --------
+rotAngle = 90;
+
+rotN = round(rotAngle/360*size(colorwheel,1));
+if sign(rotAngle)==1
+    colorwheel = [colorwheel(end-rotN+1:end,:); colorwheel(1:end-rotN,:)];
+elseif sign(rotAngle)==-1
+    colorwheel = [colorwheel(rotN+1:end,:); colorwheel(1:rotN,:)];
+end
+% --------------------------------------------------------------

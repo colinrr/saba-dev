@@ -1,13 +1,14 @@
-function [V,pixIdx,Vmu,trackI] = pickVelocities(T,Vz,G,mask,zI,det_height,det_offset,Tprc,Gprc)
+function [Vo,To,pixIdx,Vmu,roi] = pickVelocities(T,Vz,G,mask,trackParams)
 % IN:   T           = single thermal image frame
 %       Vz          = vertical velocity frame from thermOpticFlow
 %       G           = dT/dz - vertical temperature gradient for this frame
 %       mask        = single plume mask frame
-%       zI          = main window z indices [n x 1]
-%       det_height  = tracking window height (pixels)
-%       det_offset  = tracking window vertical offset (pixels)
-%       Tprc        = Temperature percentile for velocity selection
-%       Gprc        = Temperature gradient percentile for velocity selection 
+%       trackParams = struct with fields:
+%           zI         : main window z indices [n x 1]
+%           det_height : tracking window height (pixels)
+%           det_offset : tracking window vertical offset (pixels)
+%           Tprc       : Temperature percentile for velocity selection
+%           Gprc       : Temperature gradient percentile for velocity selection 
 %                      (selects values BELOW this threshold)
 
 % OUT:  V           = vector of velocity values obtained
@@ -16,35 +17,46 @@ function [V,pixIdx,Vmu,trackI] = pickVelocities(T,Vz,G,mask,zI,det_height,det_of
 %       trackI      = tracking window z indices
 %
 % C Rowell March 2020
+narginchk(5,5)
+
+% zI,detHeight,detOffset,Tprc,Gprc
+zI = [trackParams.trackWindowStart:trackParams.trackWindowStart+trackParams.trackWindowHeight-1]';
+detHeight = trackParams.detectionWindowHeight;
+detOffset = trackParams.detectionWindowOffset;
+Tprc = trackParams.Tpercentile;
+Gprc = trackParams.Gpercentile;
 
     %% Set up tracking window
-    trackI1 = (zI(1) + det_offset);
-    nTZ = det_height;
+    trackI1 = (zI(1) + detOffset);
+    nTZ = detHeight;
     trackI = (trackI1:trackI1+nTZ-1)';
+    
+    [roi,trackMask] = getROI(mask,'iLims',trackI,'maxRegions',1);
     
     % Check main window against mask in case plume top is lower than
     % window top (adjust tracking window as necessary)
-    noMask = find(any(mask(zI,:),2));
+%     noMask = find(any(mask(zI,:),2));
 %         noMask=find(~maskExists);
-    if any(noMask)
-        areas = bwconncomp(noMask);
-        numPix = cellfun(@numel,areas.PixelIdxList);
-        [~,Aidx] = max(numPix);
+%     if or(roi(1)~=trackI(1),roi(2)~=trackI(end))
+%         areas = bwconncomp(noMask);
+%         numPix = cellfun(@numel,areas.PixelIdxList);
+%         [~,Aidx] = max(numPix);
 %             V(kk).zI(:,jj) = zI(areas.PixelIdxList{Aidx}); 
         % Adjust tracking window to top of main window
-        trackI = (zI(end)-(det_height-1):zI(end))';
-    end
+%         trackI = (zI(end)-(detHeight-1):zI(end))';
+%         trackI = roi(1):roi(2);
+%     end
 
     %% Generate masks, get thresholds
     % !! Consider iterating if necessary to increase the number of pixels !!
 
-    trackMask = zeros(size(mask,1),size(mask,2)); % Tracking window mask
-    trackMask(trackI,:) = 1;
+%     trackMask = zeros(size(mask,1),size(mask,2)); % Tracking window mask
+%     trackMask(trackI,:) = 1;
     
     % Select pixels with combined plume and window mask
-    Vcut = Vz.*trackMask.*mask;
-    Tcut = T.*trackMask.*mask;
-    Gcut = G.*trackMask.*mask;
+    Vcut = Vz.*trackMask; %.*mask;
+    Tcut = T.*trackMask; %.*mask;
+    Gcut = G.*trackMask; %.*mask;
     
     % Cut out non-window pixels
     fIdx  = find(Tcut~=0); % Record pixel indices for this frame
@@ -79,7 +91,8 @@ function [V,pixIdx,Vmu,trackI] = pickVelocities(T,Vz,G,mask,zI,det_height,det_of
     %% Method 2: Clustering for final velocity selection
     num_clusters = 2;
     mynorm = (@(x) (x-min(x))./max((x-min(x))));
-    Z = linkage([mynorm(Tvals),mynorm(Gvals),mynorm(Vvals)],'weighted','euclidean');
+%     Z = linkage([mynorm(Tvals),mynorm(Gvals),mynorm(Vvals)],'weighted','euclidean');
+    Z = linkage([mynorm(Tvals),mynorm(Vvals)],'weighted','euclidean');
     myC = cluster(Z,'maxclust',num_clusters);
     
     % Select cluster with greater mean velocity
@@ -89,6 +102,7 @@ function [V,pixIdx,Vmu,trackI] = pickVelocities(T,Vz,G,mask,zI,det_height,det_of
     end
     [Vmu,mI] = max(vMeans);
     pixIdx = fIdx(myC==mI);
-    V = Vcut(pixIdx);
+    Vo = Vcut(pixIdx);
+    To = Tcut(pixIdx);
         
 end

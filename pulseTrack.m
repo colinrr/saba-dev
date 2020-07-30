@@ -36,7 +36,7 @@ srcIdxM    = 1; % Height index of first window (px)
 % (ie detection_window_offset  = round(winHeight * 0.5) - tracking starts half a window height up) 
 % (ie detection_window_scale  = round(winHeight * 0.5)  - tracking window is one half the main window) 
 % detection_window_offset = 23; % Vertical shift of detection window (pix)
-% detection_window_scale  = 18; % Vertical scale of detection window (pix)
+% detection_window_scaple  = 18; % Vertical scale of detection window (pix)
 
 det_field = 'prctile'; % Which field of T0 (source window thermal stats) to use for detection
 det_chan  = 5; % ONLY if det_field == 'prctile'. Selects which data row to use
